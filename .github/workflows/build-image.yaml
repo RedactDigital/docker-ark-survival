@@ -4,9 +4,6 @@ concurrency:
   group: build-ark-image-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  REPO:
-
 on:
   pull_request:
     branches:
@@ -109,18 +106,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
-      - name: Set Repo Var (lowercase)   
-        id: set-var
-        run: | 
-          echo "repo=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-          echo "$repo"
+      - id: set-var 
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ github.repository }}
 
       - name: Build and Push Image to ghcr.io
         uses: docker/build-push-action@v4
         with:
           push: true
           # Add tags but lowercase the branch name
-          tags: ghcr.io/${{ env.REPO }}:latest
+          tags: ghcr.io/${{ steps.set-var.outputs.lowercase }}:latest
           cache-from: type=gha # This will use the cached image from the last time we built it (Caching requires buildx done above)
           cache-to: type=gha,mode=max # This will cache the image for the next time we build it (max means it will cache all layers)
           labels: |
