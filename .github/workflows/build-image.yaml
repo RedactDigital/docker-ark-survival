@@ -94,6 +94,8 @@ jobs:
       packages: write # Needed to push docker image to ghcr.io
       contents: read # Needed to read code in repository
 
+    outputs:
+      repo: ${{ steps.set-var.outputs.repo }}
 
     steps:
       # Docker buildx is useful for caching images
@@ -107,8 +109,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
-      - name: Send repo name to lower case
-        run: repo=$(echo 'console.log("${{ github.repository }}".toLowerCase())' | node -) && echo "REPO=$repo" >> $REPO
+      - name: Set Repo Var (lowercase)   
+        id: set-var
+        run: repo=$(echo 'console.log("${{ github.repository }}".toLowerCase())' | node -) && echo "repo=$repo" >> $GITHUB_OUTPUT
 
       - name: Build and Push Image to ghcr.io
         uses: docker/build-push-action@v4
