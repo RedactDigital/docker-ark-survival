@@ -1,5 +1,5 @@
 FROM ubuntu:22.04
-LABEL org.opencontainers.image.source https://github.com/redactdigital/docker-ark-survival
+LABEL org.opencontainers.image.source https://github.com/RedactDigital/docker-ark-survival
 
 # Env variables
 ENV USER=ark
