@@ -117,6 +117,6 @@ jobs:
           cache-to: type=gha,mode=max # This will cache the image for the next time we build it (max means it will cache all layers)
           target: development # This is the target stage in the Dockerfile
           labels: |
-            org.opencontainers.image.title=Staging Image
-            org.opencontainers.image.description=Image used for staging
+            org.opencontainers.image.title=latest
+            org.opencontainers.image.description=The most recent image built from the main branch
             org.opencontainers.image.source=ghcr.io/${{ github.repository }}
