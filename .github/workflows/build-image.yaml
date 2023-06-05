@@ -1,0 +1,117 @@
+name: Build Ark Image
+
+concurrency:
+  group: build-ark-image-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches:
+      - main
+
+jobs:
+  # We are going to build an image specifically for testing and push it to ghcr.io (GitHub Container Registry)
+  # This image is used throught the entire github workflow until it is built for final deployment
+#   build-test-image:
+#     name: Build Image for Testing
+#     runs-on: ubuntu-latest
+
+#     permissions:
+#       packages: write # Needed to push docker image to ghcr.io
+#       contents: read # Needed to read code in repository
+
+#     steps:
+#       # Docker buildx is useful for caching images
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v2
+
+#       - name: Login to GitHub Container Registry
+#         uses: docker/login-action@v2
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.actor }}
+#           password: ${{ github.token }}
+
+#       - name: Build and Push Image to ghcr.io
+#         uses: docker/build-push-action@v4
+#         with:
+#           push: true
+#           tags: ghcr.io/${{ github.repository }}:test
+#           cache-from: type=gha # This will use the cached image from the last time we built it (Caching requires buildx done above)
+#           cache-to: type=gha,mode=max # This will cache the image for the next time we build it (max means it will cache all layers)
+#           target: development # This is the target stage in the Dockerfile
+#           labels: |
+#             org.opencontainers.image.title=Test Image
+#             org.opencontainers.image.description=Image used for testing
+#             org.opencontainers.image.source=ghcr.io/${{ github.repository }}
+
+  # cve-scan-docker-image:
+  #   name: CVE Scan (Docker Image)
+  #   runs-on: ubuntu-latest
+  #   needs: [build-test-image]
+
+  #   permissions:
+  #     packages: read # Needed to pull docker image from ghcr.io
+  #     actions: read # Needed to fetch code scanning SARIF file because is is an output of the action
+  #     security-events: write # Needed to upload SARIF file
+
+  #   steps:
+  #     - name: Login to GitHub Container Registry
+  #       uses: docker/login-action@v2
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.actor }}
+  #         password: ${{ github.token }}
+
+  #     - name: Pull Image from ghcr.io
+  #       run: docker pull ghcr.io/${{ github.repository }}:test
+
+  #     - name: Run Snyk to check Docker image for vulnerabilites
+  #       uses: snyk/actions/docker@master
+  #       env:
+  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #       with:
+  #         image: ghcr.io/${{ github.repository }}:test
+  #         args: --severity-threshold=high
+  #         command: monitor
+
+  # TODO write for tests when implemented
+
+  # We are going to build an image specifically for final deployment and push it to ghcr.io (GitHub Container Registry)
+  build-final-image:
+    name: Build Image for Deployment (Staging)
+    runs-on: ubuntu-latest
+    # needs: [cve-scan-docker-image]
+
+    permissions:
+      packages: write # Needed to push docker image to ghcr.io
+      contents: read # Needed to read code in repository
+
+    steps:
+      # Docker buildx is useful for caching images
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Build and Push Image to ghcr.io
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+          cache-from: type=gha # This will use the cached image from the last time we built it (Caching requires buildx done above)
+          cache-to: type=gha,mode=max # This will cache the image for the next time we build it (max means it will cache all layers)
+          target: development # This is the target stage in the Dockerfile
+          labels: |
+            org.opencontainers.image.title=Staging Image
+            org.opencontainers.image.description=Image used for staging
+            org.opencontainers.image.source=ghcr.io/${{ github.repository }}

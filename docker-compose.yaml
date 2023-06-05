@@ -1,0 +1,57 @@
+version: '3.9'
+
+# MapS: TheIsland, ScorchedEarth_P, Aberration_P, Extinction, Genesis, TheCenter, Ragnarok, CrystalIsles, Valguero_P, Fjordur, Gen2, LostIsland
+# Events: Easter, Arkaeology, ExtinctionChronicles, WinterWonderland, vday, Summer, FearEvolved, TurkeyTrial, birthday, None
+
+services:
+  island:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/redactdigital/compose-files:ark-latest
+    volumes:
+      - ./server/config:/home/ark/server/serverfiles/ShooterGame/Saved/Config/LinuxServer
+      - server:/home/ark/server/serverfiles
+    ports:
+      - 7795:7777
+      - 7796:7778
+      - 27033:27015
+      - 27036:27020  
+    environment:
+      MAP: TheIsland
+      CLUSTER: redactcluster
+      EVENT: None
+      MULTIHOME: 10.1.4.5
+      OPTIONS: '-automanagedmods -NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattleEye -crossplay -culture=en'
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+
+  rag:
+    image: ghcr.io/redactdigital/compose-files:ark-latest
+    restart: unless-stopped
+    volumes:
+      - ./server/config:/home/ark/server/serverfiles/ShooterGame/Saved/Config/LinuxServer
+      - server:/home/ark/server/serverfiles
+    ports:
+      - 7779:7777
+      - 7780:7778
+      - 27017:27015
+      - 27022:27020  
+    environment:
+      MAP: Ragnarok
+      CLUSTER: redactcluster
+      EVENT: None
+      MULTIHOME: 10.1.4.5
+      OPTIONS: '-automanagedmods -NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattleEye -crossplay -culture=en'
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  server:
+
+
