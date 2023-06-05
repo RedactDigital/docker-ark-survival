@@ -87,9 +87,9 @@ jobs:
     runs-on: ubuntu-latest
     # needs: [cve-scan-docker-image]
 
-    # permissions: 
-    #   packages: write # Needed to push docker image to ghcr.io
-    #   contents: read # Needed to read code in repository
+    permissions: 
+      packages: write # Needed to push docker image to ghcr.io
+      contents: read # Needed to read code in repository
 
 
     steps:
