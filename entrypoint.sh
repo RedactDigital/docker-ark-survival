@@ -26,13 +26,18 @@ echo "---"
 echo "Loading exit handler"
 trap exit_handler SIGTERM
 
+# Make sure user owns the server files
+echo "---"
+echo "Setting ownership of ${WORKDIR} to ${USER}"
+sudo chown -R ${USER}:${USER} ${WORKDIR}
+
 # Install the ark server
 echo "---"
-if [ ! -f ${WORKDIR}/serverfiles ]; then
-    echo "Installing ${MAP} server"
-    ${WORKDIR}/arkserver auto-install
+if [ -z "$(ls -A -- "${WORKDIR}/serverfiles")" ]; then
+    echo "installing ${MAP}"
+    ./${MAP} auto-install
 else
-    echo "Server already installed, skipping"
+    echo "serverfiles already installed"
 fi
 
 # Configure lgsm config

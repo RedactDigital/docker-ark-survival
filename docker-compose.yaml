@@ -5,9 +5,9 @@ version: '3.9'
 
 services:
   island:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    # build: 
+    #   context: .
+    #   dockerfile: Dockerfile
     image: ghcr.io/redactdigital/docker-ark-survival:latest 
     volumes:
       - ./server/config:/home/ark/server/serverfiles/ShooterGame/Saved/Config/LinuxServer
@@ -27,7 +27,6 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-
 
   rag:
     image: ghcr.io/redactdigital/docker-ark-survival:latest 
