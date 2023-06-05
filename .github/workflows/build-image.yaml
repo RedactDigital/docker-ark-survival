@@ -122,4 +122,4 @@ jobs:
           labels: |
             org.opencontainers.image.title=latest
             org.opencontainers.image.description=The most recent image built from the main branch
-            org.opencontainers.image.source=ghcr.io/${{ github.repository }}
+            org.opencontainers.image.source=ghcr.io/${{ steps.set-var.outputs.lowercase }}
