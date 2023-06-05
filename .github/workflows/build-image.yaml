@@ -111,7 +111,9 @@ jobs:
 
       - name: Set Repo Var (lowercase)   
         id: set-var
-        run: repo=$(echo 'console.log("${{ github.repository }}".toLowerCase())' | node -) && echo "repo=$repo" >> $GITHUB_OUTPUT
+        run: | 
+          echo "repo=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "$repo"
 
       - name: Build and Push Image to ghcr.io
         uses: docker/build-push-action@v4
