@@ -105,14 +105,14 @@ jobs:
 
       - name: Send repo name to lower case
         id: repo
-        run: echo "::set-output name=repo::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')"
+        run: repo=$(echo 'console.log("${{ github.repository }}".toLowerCase())' | node -)        
 
       - name: Build and Push Image to ghcr.io
         uses: docker/build-push-action@v4
         with:
           push: true
           # Add tags but lowercase the branch name
-          tags: ghcr.io/${repo}:latest
+          tags: ghcr.io/$repo:latest
           cache-from: type=gha # This will use the cached image from the last time we built it (Caching requires buildx done above)
           cache-to: type=gha,mode=max # This will cache the image for the next time we build it (max means it will cache all layers)
           target: development # This is the target stage in the Dockerfile
