@@ -108,7 +108,7 @@ jobs:
           password: ${{ github.token }}
 
       - name: Send repo name to lower case
-        run: repo=$(echo 'console.log("${{ github.repository }}".toLowerCase())' | node -) && echo "REPO=$repo" >> $GITHUB_OUTPUT
+        run: repo=$(echo 'console.log("${{ github.repository }}".toLowerCase())' | node -) && echo "REPO=$repo" >> $REPO
 
       - name: Build and Push Image to ghcr.io
         uses: docker/build-push-action@v4
