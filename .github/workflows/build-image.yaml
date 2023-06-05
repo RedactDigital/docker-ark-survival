@@ -105,7 +105,7 @@ jobs:
 
       - name: Send repo name to lower case
         id: repo
-        run: repo=$(echo 'console.log("${{ github.repository }}".toLowerCase())' | node -)        
+        run: repo=$(echo 'console.log("${{ github.repository }}".toLowerCase())' | node -) && echo "::set-output name=repo::$repo"
 
       - name: Build and Push Image to ghcr.io
         uses: docker/build-push-action@v4
