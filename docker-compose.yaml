@@ -34,4 +34,4 @@ services:
         condition: on-failure
       placement:
         constraints:
-          - node.service == ark-server
+          - node.labels.service == ark-server
