@@ -8,8 +8,14 @@ ENV GID=1000
 # Because steam is a 32 bit app, we need to add the i386 architecture
 RUN dpkg --add-architecture i386
 
+# Insert Steam prompt ansers. This is required to install steamcmd
+# Otherwise the build will fail
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN echo steam steam/question select "I AGREE" | debconf-set-selections \
+    && echo steam steam/license note '' | debconf-set-selections
+
 # Install the required packages
-RUN apt update && apt upgrade -y && apt install -y \
+RUN apt update && apt upgrade -y && apt install -y --no-install-recommends \
     curl \
     wget \
     file \
@@ -35,7 +41,21 @@ RUN apt update && apt upgrade -y && apt install -y \
     vim \
     sudo \
     cron \
-    iproute2
+    iproute2 \
+    locales \
+    steamcmd && \
+    rm -rf /var/lib/apt/lists/*
+
+# Add unicode support
+RUN locale-gen en_US.UTF-8
+ENV LANG 'en_US.UTF-8'
+ENV LANGUAGE 'en_US:en'
+
+# Create symlinks for steamcmd so that it can be run from anywhere
+RUN ln -s /usr/games/steamcmd /usr/bin/steamcmd
+
+# Update SteamCMD and varify latest version
+RUN steamcmd +quit
 
 # Install NodeJS and GameDig for the web interface
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
@@ -60,18 +80,10 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # Switch to the ark user so that the server files are owned by the ark user
 USER ${USER}
 
-# Install SteamCMD
-RUN mkdir /home/${USER}/steamcmd
-
-WORKDIR /home/${USER}/steamcmd
-
-RUN wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
-    tar -xvzf steamcmd_linux.tar.gz && \
-    rm steamcmd_linux.tar.gz
-
-# Install LinuxGSM in the server directory
+# This needs done after the user is created so that the files are owned by the ark user
 WORKDIR /home/${USER}/server
 
+# Install LinuxGSM in the server directory
 RUN wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh arkserver
 
 # Add LinuxGSM cronjobs

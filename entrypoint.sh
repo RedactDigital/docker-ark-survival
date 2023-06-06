@@ -12,7 +12,7 @@ RCONPORT=${RCONPORT:-"27020"}
 EVENT=${EVENT:-"None"}
 CLUSTER=${CLUSTER:-"cluster"}
 OPTIONS=${OPTIONS:-""}
-MULTIHOME=${MULTIHOME:-""}
+MULTIHOME=${MULTIHOME:-"0.0.0.0"}
 
 exit_handler() {
     # Execute the  shutdown commands
@@ -51,6 +51,8 @@ echo "Updating ${MAP}"
 ${WORKDIR}/arkserver update
 
 # Configure lgsm config
+# This should be done after the install and update because
+# the install and update will overwrite the config file
 echo "---"
 echo "Configuring ${MAP} startup config"
 rm -f ${WORKDIR}/lgsm/config-lgsm/arkserver/arkserver.cfg
