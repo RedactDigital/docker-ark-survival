@@ -52,7 +52,7 @@ echo "
 #### Server Settings ####
 
 fn_parms() {
-    parms=\"\\\"${MAP}?AltSaveDirectoryName=${MAP}?listen?QueryPort=${QUERYPORT}?RCONPort=${RCONPORT}?Port=${PORT}MultiHome=${MULTIHOME} -ActiveEvent=${EVENT} ${OPTIONS} -clusterid=${CLUSTER} \\\"\"
+    parms=\"\\\"${MAP}?AltSaveDirectoryName=${MAP}?listen?QueryPort=${QUERYPORT}?RCONPort=${RCONPORT}?Port=${PORT}?MultiHome=${MULTIHOME} -ActiveEvent=${EVENT} ${OPTIONS} -clusterid=${CLUSTER} \\\"\"
 }
 " >${WORKDIR}/lgsm/config-lgsm/arkserver/arkserver.cfg
 
