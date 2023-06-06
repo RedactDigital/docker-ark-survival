@@ -40,6 +40,16 @@ else
     echo "serverfiles already installed"
 fi
 
+# Make sure user owns the server files
+echo "---"
+echo "Setting ownership of ${WORKDIR} to ${USER}"
+sudo chown -R ${USER}:${USER} ${WORKDIR}
+
+# Update the server
+echo "---"
+echo "Updating ${MAP}"
+${WORKDIR}/arkserver update
+
 # Configure lgsm config
 echo "---"
 echo "Configuring ${MAP} startup config"
@@ -60,16 +70,6 @@ fn_parms() {
 echo "---"
 echo "Starting cron"
 sudo cron
-
-# Make sure user owns the server files
-echo "---"
-echo "Setting ownership of ${WORKDIR} to ${USER}"
-sudo chown -R ${USER}:${USER} ${WORKDIR}
-
-# Update the server
-echo "---"
-echo "Updating ${MAP}"
-${WORKDIR}/arkserver update
 
 # Start the server
 echo "---"
