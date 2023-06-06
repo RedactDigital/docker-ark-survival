@@ -5,11 +5,14 @@ version: '3.9'
 
 services:
   island:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: ghcr.io/redactdigital/docker-ark-survival:latest
     volumes:
       # This is where the ARK saved game data is stored, and also where
       # the ARK server configuration file is stored.
-      - ./ark-server:/home/ark/server/serverfiles/ShooterGame/Saved
+      - ./ark-server:/home/ark/server/serverfiles
     ports:
       # The connection port for the ARK game client
       - 7777:7777/udp
