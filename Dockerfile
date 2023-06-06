@@ -35,7 +35,7 @@ RUN apt update && apt upgrade -y && apt install -y \
     vim \
     sudo \
     cron \
-    iproute2 
+    iproute2
 
 # Install NodeJS and GameDig for the web interface
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
@@ -57,9 +57,19 @@ RUN groupadd --gid ${GID} ${USER} && \
 # Ensure sudo group does not require a password
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-
-# Switch to the ark user and download the linuxgsm script
+# Switch to the ark user so that the server files are owned by the ark user
 USER ${USER}
+
+# Install SteamCMD
+RUN mkdir /home/${USER}/steamcmd
+
+WORKDIR /home/${USER}/steamcmd
+
+RUN wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
+    tar -xvzf steamcmd_linux.tar.gz && \
+    rm steamcmd_linux.tar.gz
+
+# Install LinuxGSM in the server directory
 WORKDIR /home/${USER}/server
 
 RUN wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh arkserver
