@@ -35,7 +35,7 @@ sudo chown -R ${USER}:${USER} ${WORKDIR}
 echo "---"
 if [ -z "$(ls -A -- "${WORKDIR}/serverfiles")" ]; then
     echo "installing ${MAP}"
-    ./${MAP} auto-install
+    ./arkserver auto-install
 else
     echo "serverfiles already installed"
 fi
