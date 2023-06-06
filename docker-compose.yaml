@@ -25,3 +25,10 @@ services:
       EVENT: None
       OPTIONS: '-automanagedmods -NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattleEye -crossplay -culture=en'
       # MULTIHOME: 10.1.4.5
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.service == ark
