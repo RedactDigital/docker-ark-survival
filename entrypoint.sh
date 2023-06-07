@@ -7,8 +7,8 @@ WORKDIR=/home/${USER}/server
 # Environment variables (set in docker-compose.yml)
 MAP=${MAP:-"TheIsland"}
 PORT=${PORT:-"7777"}
-QUERYPORT=${QUERYPORT:-"27015"}
-RCONPORT=${RCONPORT:-"27020"}
+QUERY_PORT=${QUERY_PORT:-"27015"}
+RCON_PORT=${RCON_PORT:-"27020"}
 EVENT=${EVENT:-"None"}
 CLUSTER=${CLUSTER:-"cluster"}
 OPTIONS=${OPTIONS:-""}
@@ -64,7 +64,7 @@ echo "
 #### Server Settings ####
 
 fn_parms() {
-    parms=\"\\\"${MAP}?listen?AltSaveDirectoryName=${MAP}?Port=${PORT}?QueryPort=${QUERYPORT}?RCONPort=${RCONPORT}?RCONEnabled=True${CUSTOM_PARAMS} -ActiveEvent=${EVENT} ${OPTIONS} -clusterid=${CLUSTER} \\\"\"
+    parms=\"\\\"${MAP}?listen?AltSaveDirectoryName=${MAP}?Port=${PORT}?QueryPort=${QUERY_PORT}?RCON_Port=${RCON_PORT}?RCONEnabled=True${CUSTOM_PARAMS} -ActiveEvent=${EVENT} ${OPTIONS} -clusterid=${CLUSTER} \\\"\"
 }
 " >${WORKDIR}/lgsm/config-lgsm/arkserver/arkserver.cfg
 

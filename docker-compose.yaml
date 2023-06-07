@@ -15,7 +15,7 @@ services:
       - 7777:7777/udp
       # Raw UDP port (should always be game client port + 1)
       - 7778:7778/udp
-      # Query port used to list servers on the internet
+      # Query port used to list servers on steam (Query Port cannot be between 27020 and 27050 due to Steam using those ports)
       - 27015:27015/udp
       # RCON management port
       - 27020:27020/tcp
@@ -37,19 +37,22 @@ services:
       - ./ark-server:/home/ark/server/serverfiles
     ports:
       # The connection port for the ARK game client
-      - 7779:7777/udp
+      - 7779:7779/udp
       # Raw UDP port (should always be game client port + 1)
-      - 7780:7778/udp
-      # Query port used to list servers on the internet
-      - 27017:27015/udp
+      - 7780:77780/udp
+      # Query port used to list servers on steam (Query Port cannot be between 27020 and 27050 due to Steam using those ports)
+      - 27017:27017/udp
       # RCON management port
-      - 27022:27020/tcp
+      - 27022:27022/tcp
     environment:
       MAP: Fjordur
       CLUSTER: redactcluster
       EVENT: Summer
       OPTIONS: '-NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattlEye -crossplay -culture=en -EnableIdlePlayerKick -ServerRCONOutputTribeLogs -gameplaylogging'
       CUSTOM_PARAMS: '?OverrideOfficialDifficulty=5.0?AllowCrateSpawnsOnTopOfStructures=true?AllowFlyingStaminaRecovery?ShowFloatingDamageText=true'
+      PORT: 7779
+      QUERY_PORT: 27017
+      RCON_PORT: 27022
 
   ragnarok:
     build:
@@ -65,7 +68,7 @@ services:
       - 7781:7777/udp
       # Raw UDP port (should always be game client port + 1)
       - 7782:7778/udp
-      # Query port used to list servers on the internet
+      # Query port used to list servers on steam (Query Port cannot be between 27020 and 27050 due to Steam using those ports)
       - 27019:27015/udp
       # RCON management port
       - 27024:27020/tcp
@@ -90,7 +93,7 @@ services:
       - 7783:7777/udp
       # Raw UDP port (should always be game client port + 1)
       - 7784:7778/udp
-      # Query port used to list servers on the internet
+      # Query port used to list servers on steam (Query Port cannot be between 27020 and 27050 due to Steam using those ports)
       - 27021:27015/udp
       # RCON management port
       - 27026:27020/tcp

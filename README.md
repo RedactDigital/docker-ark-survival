@@ -19,6 +19,9 @@
 | `EVENT`         | `None`      | Easter, Arkaeology, ExtinctionChronicles, WinterWonderland, vday, Summer, FearEvolved, TurkeyTrial, birthday, None                      |
 | `OPTIONS`       |             | Options for the server                                                                                                                  |
 | `CUSTOM_PARAMS` |             | Custom parameters for the server                                                                                                        |
+| `PORT`          | `7777`      | Port for the server                                                                                                                     |
+| `QUERY_PORT`    | `27015`     | Port steam uses to query the server (Query Port cannot be between 27020 and 27050 due to Steam using those ports)                       |
+| `RCON_PORT`     | `27020`     | Port for the rcon server                                                                                                                |
 
 ### Options for the server
 
