@@ -65,19 +65,22 @@ services:
       - ./ark-server:/home/ark/server/serverfiles
     ports:
       # The connection port for the ARK game client
-      - 7781:7777/udp
+      - 7781:7781/udp
       # Raw UDP port (should always be game client port + 1)
       - 7782:7778/udp
       # Query port used to list servers on steam (Query Port cannot be between 27020 and 27050 due to Steam using those ports)
-      - 27019:27015/udp
+      - 27019:27019/udp
       # RCON management port
-      - 27024:27020/tcp
+      - 27024:27024/tcp
     environment:
       MAP: Ragnarok
       CLUSTER: redactcluster
       EVENT: Summer
       OPTIONS: '-NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattlEye -crossplay -culture=en -EnableIdlePlayerKick -ServerRCONOutputTribeLogs -gameplaylogging'
       CUSTOM_PARAMS: '?OverrideOfficialDifficulty=5.0?AllowCrateSpawnsOnTopOfStructures=true?AllowFlyingStaminaRecovery?ShowFloatingDamageText=true'
+      PORT: 7781
+      QUERY_PORT: 27019
+      RCON_PORT: 27024
 
   genesis-2:
     build:
@@ -90,19 +93,22 @@ services:
       - ./ark-server:/home/ark/server/serverfiles
     ports:
       # The connection port for the ARK game client
-      - 7783:7777/udp
+      - 7783:7783/udp
       # Raw UDP port (should always be game client port + 1)
       - 7784:7778/udp
       # Query port used to list servers on steam (Query Port cannot be between 27020 and 27050 due to Steam using those ports)
-      - 27021:27015/udp
+      - 27021:27021/udp
       # RCON management port
-      - 27026:27020/tcp
+      - 27026:27026/tcp
     environment:
       MAP: Gen2
       CLUSTER: redactcluster
       EVENT: Summer
       OPTIONS: '-NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattlEye -crossplay -culture=en -EnableIdlePlayerKick -ServerRCONOutputTribeLogs -gameplaylogging'
       CUSTOM_PARAMS: '?OverrideOfficialDifficulty=5.0?AllowCrateSpawnsOnTopOfStructures=true?AllowFlyingStaminaRecovery?ShowFloatingDamageText=true'
+      PORT: 7783
+      QUERY_PORT: 27021
+      RCON_PORT: 27026
 
     deploy:
       replicas: 1
