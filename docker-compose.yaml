@@ -87,9 +87,9 @@ services:
       - ./ark-server:/home/ark/server/serverfiles
     ports:
       # The connection port for the ARK game client
-      - 7782:7777/udp
+      - 7783:7777/udp
       # Raw UDP port (should always be game client port + 1)
-      - 7783:7778/udp
+      - 7784:7778/udp
       # Query port used to list servers on the internet
       - 27021:27015/udp
       # RCON management port
