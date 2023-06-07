@@ -39,7 +39,7 @@ services:
       # The connection port for the ARK game client
       - 7779:7779/udp
       # Raw UDP port (should always be game client port + 1)
-      - 7780:77780/udp
+      - 7780:7780/udp
       # Query port used to list servers on steam (Query Port cannot be between 27020 and 27050 due to Steam using those ports)
       - 27017:27017/udp
       # RCON management port
