@@ -1,8 +1,5 @@
 version: '3.9'
 
-# MapS: TheIsland, ScorchedEarth_P, Aberration_P, Extinction, Genesis, TheCenter, Ragnarok, CrystalIsles, Valguero_P, Fjordur, Gen2, LostIsland
-# Events: Easter, Arkaeology, ExtinctionChronicles, WinterWonderland, vday, Summer, FearEvolved, TurkeyTrial, birthday, None
-
 services:
   island:
     build:
@@ -25,9 +22,9 @@ services:
     environment:
       MAP: TheIsland
       CLUSTER: redactcluster
-      EVENT: None
-      OPTIONS: '-automanagedmods -NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattleEye -crossplay -culture=en'
-      # MULTIHOME: 10.1.1.1
+      EVENT: Summer
+      OPTIONS: '-NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattlEye -crossplay -culture=en -EnableIdlePlayerKick -ServerRCONOutputTribeLogs -gameplaylogging'
+      CUSTOM_PARAMS: '?OverrideOfficialDifficulty=5.0?AllowCrateSpawnsOnTopOfStructures=true?AllowFlyingStaminaRecovery?ShowFloatingDamageText=true'
 
   fjordur:
     build:
@@ -50,9 +47,59 @@ services:
     environment:
       MAP: Fjordur
       CLUSTER: redactcluster
-      EVENT: None
-      OPTIONS: '-automanagedmods -NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattleEye -crossplay -culture=en'
-      # MULTIHOME: 10.1.1.1
+      EVENT: Summer
+      OPTIONS: '-NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattlEye -crossplay -culture=en -EnableIdlePlayerKick -ServerRCONOutputTribeLogs -gameplaylogging'
+      CUSTOM_PARAMS: '?OverrideOfficialDifficulty=5.0?AllowCrateSpawnsOnTopOfStructures=true?AllowFlyingStaminaRecovery?ShowFloatingDamageText=true'
+
+  ragnarok:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/redactdigital/docker-ark-survival:latest
+    volumes:
+      # This is where the ARK saved game data is stored, and also where
+      # the ARK server configuration file is stored.
+      - ./ark-server:/home/ark/server/serverfiles
+    ports:
+      # The connection port for the ARK game client
+      - 7781:7777/udp
+      # Raw UDP port (should always be game client port + 1)
+      - 7782:7778/udp
+      # Query port used to list servers on the internet
+      - 27019:27015/udp
+      # RCON management port
+      - 27024:27020/tcp
+    environment:
+      MAP: Ragnarok
+      CLUSTER: redactcluster
+      EVENT: Summer
+      OPTIONS: '-NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattlEye -crossplay -culture=en -EnableIdlePlayerKick -ServerRCONOutputTribeLogs -gameplaylogging'
+      CUSTOM_PARAMS: '?OverrideOfficialDifficulty=5.0?AllowCrateSpawnsOnTopOfStructures=true?AllowFlyingStaminaRecovery?ShowFloatingDamageText=true'
+
+  genesis-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/redactdigital/docker-ark-survival:latest
+    volumes:
+      # This is where the ARK saved game data is stored, and also where
+      # the ARK server configuration file is stored.
+      - ./ark-server:/home/ark/server/serverfiles
+    ports:
+      # The connection port for the ARK game client
+      - 7782:7777/udp
+      # Raw UDP port (should always be game client port + 1)
+      - 7783:7778/udp
+      # Query port used to list servers on the internet
+      - 27021:27015/udp
+      # RCON management port
+      - 27026:27020/tcp
+    environment:
+      MAP: Gen2
+      CLUSTER: redactcluster
+      EVENT: Summer
+      OPTIONS: '-NoTransferFromFiltering -ForceAllowCaveFlyers -usecache -NoBattlEye -crossplay -culture=en -EnableIdlePlayerKick -ServerRCONOutputTribeLogs -gameplaylogging'
+      CUSTOM_PARAMS: '?OverrideOfficialDifficulty=5.0?AllowCrateSpawnsOnTopOfStructures=true?AllowFlyingStaminaRecovery?ShowFloatingDamageText=true'
 
     deploy:
       replicas: 1

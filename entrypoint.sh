@@ -12,7 +12,7 @@ RCONPORT=${RCONPORT:-"27020"}
 EVENT=${EVENT:-"None"}
 CLUSTER=${CLUSTER:-"cluster"}
 OPTIONS=${OPTIONS:-""}
-MULTIHOME=${MULTIHOME:-"0.0.0.0"}
+CUSTOM_PARAMS=${CUSTOM_PARAMS:-""}
 
 exit_handler() {
     # Execute the  shutdown commands
@@ -64,7 +64,7 @@ echo "
 #### Server Settings ####
 
 fn_parms() {
-    parms=\"\\\"${MAP}?AltSaveDirectoryName=${MAP}?listen?QueryPort=${QUERYPORT}?RCONPort=${RCONPORT}?Port=${PORT}?MultiHome=${MULTIHOME} -ActiveEvent=${EVENT} ${OPTIONS} -clusterid=${CLUSTER} \\\"\"
+    parms=\"\\\"${MAP}?listen?AltSaveDirectoryName=${MAP}?Port=${PORT}?QueryPort=${QUERYPORT}?RCONPort=${RCONPORT}?RCONEnabled=True${CUSTOM_PARAMS} -ActiveEvent=${EVENT} ${OPTIONS} -clusterid=${CLUSTER} \\\"\"
 }
 " >${WORKDIR}/lgsm/config-lgsm/arkserver/arkserver.cfg
 
