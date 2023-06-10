@@ -91,9 +91,6 @@ jobs:
       packages: write # Needed to push docker image to ghcr.io
       contents: read # Needed to read code in repository
 
-    outputs:
-      repo: ${{ steps.set-var.outputs.repo }}
-
     steps:
       # Docker buildx is useful for caching images
       - name: Set up Docker Buildx
